@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gerador de Contrato de Arrendamento</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<header class="app-header">
+  <img id="app-logo" src="images/Icon.png" alt="logo">
+  <h1 id="app-name">Gerador de Contrato de Arrendamento</h1>
+  <nav class="tabs">
+    <button data-tab="formulario" class="active">Formulário</button>
+    <button data-tab="clausulas">Cláusulas</button>
+    <button data-tab="config">Configurações</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ===================== VIEW: FORMULARIO / PDF ===================== -->
+  <section id="view-formulario" class="view active">
+
+    <div class="steps">
+      <div id="step-ind-1" class="current">1. Formulário</div>
+      <div id="step-ind-2">2. PDF</div>
+    </div>
+
+    <!-- STEP 1: FORM -->
+    <div id="step-form">
+
+      <div class="card">
+        <div class="row-inline" style="justify-content:space-between;">
+          <div>
+            <label>Arrendante</label>
+            <div class="toggle-group" id="toggle-arrendante">
+              <button data-val="PF" class="active">Pessoa Física</button>
+              <button data-val="PJ">Empresa</button>
+            </div>
+          </div>
+          <div>
+            <label>Arrendatário</label>
+            <div class="toggle-group" id="toggle-arrendatario">
+              <button data-val="PF">Pessoa Física</button>
+              <button data-val="PJ" class="active">Empresa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Arrendante</h2>
+        <div id="form-arrendante"></div>
+      </div>
+
+      <div class="card">
+        <h2>Arrendatário</h2>
+        <div id="form-arrendatario"></div>
+      </div>
+
+      <div class="card">
+        <h2>Prazo, comarca e firma</h2>
+        <div class="grid">
+          <div class="field"><label>Data atual</label><input type="date" id="f-data-atual"></div>
+          <div class="field"><label>Início do prazo</label><input type="date" id="f-prazo-inicio"></div>
+          <div class="field"><label>Fim do prazo</label><input type="date" id="f-prazo-fim"></div>
+          <div class="field"><label>Comarca</label><input type="text" id="f-comarca"></div>
+          <div class="field">
+            <label>Tipo de firma</label>
+            <select id="f-tipo-firma">
+              <option>SEMELHANCA</option>
+              <option>AUTENTICIDADE</option>
+              <option>ASSINATURA DIGITAL</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Veículos</h2>
+        <div class="grid">
+          <div class="field"><label>Placa</label><input type="text" id="v-placa" data-mask="placa" placeholder="ABC1D23" maxlength="7"></div>
+          <div class="field"><label>Marca/Modelo</label><input type="text" id="v-marca"></div>
+          <div class="field"><label>Ano</label><input type="text" id="v-ano" data-mask="ano" placeholder="0000" maxlength="4"></div>
+          <div class="field"><label>Chassis</label><input type="text" id="v-chassis"></div>
+        </div>
+        <div style="margin-top:10px;"><button class="btn secondary" id="btn-add-veiculo">+ Adicionar veículo</button></div>
+        <table id="tabela-veiculos">
+          <thead><tr><th>Placa</th><th>Marca/Modelo</th><th>Ano</th><th>Chassis</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Rascunho</h2>
+        <p class="muted">Salve o preenchimento atual em um arquivo para poder continuar depois, mesmo em outro momento ou computador.</p>
+        <div class="row-inline">
+          <button class="btn secondary small" id="btn-export-rascunho">Exportar rascunho (.json)</button>
+          <span class="file-btn"><input type="file" id="input-import-rascunho" accept="application/json" style="display:none;"><button class="btn secondary small" onclick="document.getElementById('input-import-rascunho').click()">Importar rascunho (.json)</button></span>
+          <button class="btn ghost small" id="btn-limpar-form">Limpar formulário</button>
+        </div>
+      </div>
+
+      <div id="msg-validacao"></div>
+      <div class="actions-bar">
+        <span></span>
+        <button class="btn" id="btn-gerar-pdf">Gerar PDF →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: PDF -->
+    <div id="step-pdf" style="display:none;">
+      <button class="btn secondary small" id="btn-voltar-form-topo" style="margin-bottom:12px;">← Voltar ao formulário</button>
+      <div class="card">
+        <h2>Contrato gerado</h2>
+        <div class="row-inline" style="justify-content:space-between;margin-bottom:12px;">
+          <div class="row-inline">
+            <button class="btn" id="btn-baixar-pdf">Baixar PDF</button>
+            <button class="btn secondary" id="btn-copiar-texto">Copiar texto (Ctrl+C)</button>
+          </div>
+          <button class="btn ghost" id="btn-novo-contrato">Iniciar novo contrato</button>
+        </div>
+        <pre class="contract-text" id="texto-final"></pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===================== VIEW: CLAUSULAS ===================== -->
+  <section id="view-clausulas" class="view">
+    <button class="btn secondary small" id="btn-voltar-form-clausulas" style="margin-bottom:12px;">← Voltar ao formulário</button>
+    <div class="card">
+      <h2>Cláusulas do contrato</h2>
+      <p class="muted">Revise e, se quiser, edite qualquer cláusula abaixo. Alterações valem só para este contrato — a menos que você clique em "Salvar como personalizada", que guarda a versão para uso futuro sem apagar a cláusula padrão.</p>
+      <div id="clausulas-container"></div>
+    </div>
+  </section>
+
+  <!-- ===================== VIEW: CONFIGURACOES ===================== -->
+  <section id="view-config" class="view">
+
+    <div class="card">
+      <h2>Identidade do sistema (aparece só na interface, não no contrato)</h2>
+      <div class="grid">
+        <div class="field">
+          <label>Nome do sistema</label>
+          <input type="text" id="cfg-nome-sistema">
+        </div>
+        <div class="field">
+          <label>Logo</label>
+          <input type="file" id="cfg-logo-input" accept="image/*">
+        </div>
+        <div class="field">
+          <label>Favicon (emoji ou URL de imagem)</label>
+          <input type="text" id="cfg-favicon" placeholder="📄">
+        </div>
+      </div>
+      <h3>Cores do site</h3>
+      <div class="grid">
+        <div class="field"><label>Cor de destaque</label><input type="color" id="cfg-cor-destaque"></div>
+        <div class="field"><label>Cor de fundo</label><input type="color" id="cfg-cor-fundo"></div>
+        <div class="field"><label>Cor do texto</label><input type="color" id="cfg-cor-texto"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Formatação do PDF</h2>
+      <div class="grid">
+        <div class="field">
+          <label>Fonte</label>
+          <select id="cfg-fonte-familia">
+            <option value="helvetica">Helvetica</option>
+            <option value="times">Times</option>
+            <option value="courier">Courier</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tamanho do texto (pt)</label>
+          <input type="number" id="cfg-fonte-tamanho" min="8" max="14" step="0.5">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>APIs</h2>
+      <p class="muted">Ordem = prioridade. Se a primeira falhar, o sistema tenta a próxima automaticamente. Chave é opcional (só necessária se a API exigir).</p>
+
+      <h3>CEP</h3>
+      <div id="api-list-cep"></div>
+      <button class="btn secondary small" data-cat="cep" data-action="add-api">+ Adicionar API de CEP</button>
+
+      <h3>CNPJ</h3>
+      <div id="api-list-cnpj"></div>
+      <button class="btn secondary small" data-cat="cnpj" data-action="add-api">+ Adicionar API de CNPJ</button>
+
+      <h3>CPF</h3>
+      <div id="api-list-cpf"></div>
+      <button class="btn secondary small" data-cat="cpf" data-action="add-api">+ Adicionar API de CPF</button>
+    </div>
+
+    <div class="card">
+      <h2>Salvar / restaurar configurações</h2>
+      <div class="row-inline">
+        <button class="btn secondary small" id="btn-export-config">Exportar config (.json)</button>
+        <span class="file-btn"><input type="file" id="input-import-config" accept="application/json" style="display:none;"><button class="btn secondary small" onclick="document.getElementById('input-import-config').click()">Importar config (.json)</button></span>
+        <button class="btn ghost small" id="btn-reset-config">Restaurar padrões de fábrica</button>
+      </div>
+      <div id="msg-config"></div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- Módulos JS, nesta ordem (cada um depende dos anteriores) -->
+<script src="js/config.js"></script>
+<script src="js/state.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/form.js"></script>
+<script src="js/clausulas.js"></script>
+<script src="js/pdf.js"></script>
+<script src="js/config-ui.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

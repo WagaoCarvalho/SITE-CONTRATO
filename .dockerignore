@@ -1,0 +1,48 @@
+# =========================================================================
+# Arquivos que NÃO entram na imagem Docker
+# =========================================================================
+
+# Controle de versão
+.git
+.gitignore
+.gitattributes
+
+# Arquivos compactados e backups
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.bak
+
+# Documentação / anotações
+*.md
+*.txt
+!favicon.txt
+
+# Logs e temporários
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDEs / editores
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docker (não precisa entrar na imagem)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Node (não usamos, mas por segurança)
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Arquivos específicos do WSL / sistema
+.wslconfig
