@@ -7,16 +7,16 @@ const ConfigDefaults = () => ({
   fonte: { familia: 'helvetica', tamanho: 10.5 },
   apis: {
     cep: [
-      { nome:'ViaCEP', url:'https://viacep.com.br/ws/{cep}/json/', chave:'', ativo:true },
-      { nome:'BrasilAPI', url:'https://brasilapi.com.br/api/cep/v2/{cep}', chave:'', ativo:true },
-      { nome:'AwesomeAPI', url:'https://cep.awesomeapi.com.br/json/{cep}', chave:'', ativo:true }
+      { nome: 'ViaCEP', url: 'https://viacep.com.br/ws/{cep}/json/', chave: '', ativo: true },
+      { nome: 'BrasilAPI', url: 'https://brasilapi.com.br/api/cep/v2/{cep}', chave: '', ativo: true },
+      { nome: 'AwesomeAPI', url: 'https://cep.awesomeapi.com.br/json/{cep}', chave: '', ativo: true }
     ],
     cnpj: [
-      { nome:'BrasilAPI', url:'https://brasilapi.com.br/api/cnpj/v1/{cnpj}', chave:'', ativo:true },
-      { nome:'ReceitaWS', url:'https://receitaws.com.br/v1/cnpj/{cnpj}', chave:'', ativo:true }
+      { nome: 'BrasilAPI', url: 'https://minhareceita.org/{cnpj}', chave: '', ativo: true },
+      { nome: 'ReceitaWS', url: 'https://receitaws.com.br/v1/cnpj/{cnpj}', chave: '', ativo: true }
     ],
     cpf: [
-      { nome:'ApiCPF', url:'https://apicpf.com/api/consulta?cpf={cpf}', chave:'', ativo:true }
+      { nome: 'ApiCPF', url: 'https://apicpf.com/api/consulta?cpf={cpf}', chave: '', ativo: true }
     ]
   },
   clausulasPadrao: {
@@ -28,18 +28,18 @@ const ConfigDefaults = () => ({
     c6: 'As despesas necessárias para o registro mencionado na Cláusula Quarta ficarão a cargo do(a) ARRENDATÁRIO(A).',
     c7: 'Fica eleito o foro da comarca de {{COMARCA}} como único competente para dirimir quaisquer questões oriundas deste contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.'
   },
-  clausulasPersonalizadas: { c1:[], c2:[], c3:[], c4:[], c5:[], c6:[], c7:[] }
+  clausulasPersonalizadas: { c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] }
 });
 
-const CLAUSE_LABELS = { c1:'CLÁUSULA PRIMEIRA', c2:'CLÁUSULA SEGUNDA', c3:'CLÁUSULA TERCEIRA', c4:'CLÁUSULA QUARTA', c5:'CLÁUSULA QUINTA', c6:'CLÁUSULA SEXTA', c7:'CLÁUSULA SÉTIMA' };
+const CLAUSE_LABELS = { c1: 'CLÁUSULA PRIMEIRA', c2: 'CLÁUSULA SEGUNDA', c3: 'CLÁUSULA TERCEIRA', c4: 'CLÁUSULA QUARTA', c5: 'CLÁUSULA QUINTA', c6: 'CLÁUSULA SEXTA', c7: 'CLÁUSULA SÉTIMA' };
 
-function loadConfigLocal(){
-  try{ const raw = localStorage.getItem('contrato_config'); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
+function loadConfigLocal() {
+  try { const raw = localStorage.getItem('contrato_config'); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
 }
-function saveConfigLocal(){
+function saveConfigLocal() {
   localStorage.setItem('contrato_config', JSON.stringify(CONFIG));
   const el = document.getElementById('msg-config');
-  if(el) el.innerHTML = '<div class="msg info">Configurações alteradas. Exporte o config.json para não perder ao trocar de computador.</div>';
+  if (el) el.innerHTML = '<div class="msg info">Configurações alteradas. Exporte o config.json para não perder ao trocar de computador.</div>';
 }
 
 // Mescla com os padrões para não quebrar se um config.json antigo não tiver campos novos.
