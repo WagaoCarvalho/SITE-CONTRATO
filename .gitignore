@@ -1,0 +1,57 @@
+# Dependências
+node_modules/
+vendor/
+
+# Arquivos de ambiente e segredos
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log.*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Builds e artefatos
+dist/
+build/
+out/
+*.tgz
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Arquivos de backup e temporários
+*.bak
+*.tmp
+*.temp
+*.orig
+
+# Arquivos zipados de distribuição (opcional, remova se forem versionados)
+files.zip
+gerador-contrato.zip
+
+# Docker (volumes locais, se houver)
+docker-compose.override.yml
+
+# Graphify (knowledge graph gerado)
+graphify-out/
