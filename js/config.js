@@ -12,8 +12,8 @@ const ConfigDefaults = () => ({
       { nome: 'AwesomeAPI', url: 'https://cep.awesomeapi.com.br/json/{cep}', chave: '', ativo: true }
     ],
     cnpj: [
-      { nome: 'BrasilAPI', url: 'https://minhareceita.org/{cnpj}', chave: '', ativo: true },
-      { nome: 'ReceitaWS', url: 'https://receitaws.com.br/v1/cnpj/{cnpj}', chave: '', ativo: true }
+      { nome: 'ReceitaWS', url: 'https://receitaws.com.br/v1/cnpj/{cnpj}', chave: '', ativo: true },
+      { nome: 'BrasilAPI', url: 'https://minhareceita.org/{cnpj}', chave: '', ativo: true }
     ],
     cpf: [
       { nome: 'ApiCPF', url: 'https://apicpf.com/api/consulta?cpf={cpf}', chave: '', ativo: true }

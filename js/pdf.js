@@ -373,7 +373,7 @@ function gerarPDF() {
     const documento =
       documentoAssinante(col.prefixo);
 
-    
+
 
     // ---------------------------------------------------------------
     // LINHA PARA ASSINATURA
@@ -409,7 +409,7 @@ function gerarPDF() {
         align: 'center'
       }
     );
-    doc.setLineWidth(0.15);    
+    doc.setLineWidth(0.15);
 
     yy += 5;
 
