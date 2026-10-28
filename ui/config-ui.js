@@ -46,7 +46,11 @@ function aplicarFavicon(valor) {
   let link = document.querySelector("link[rel~='icon']");
   if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
   if (!valor) return;
-  if (/^https?:\/\//.test(valor) || valor.startsWith('data:')) { link.href = valor; }
+  // URL completa, data URI, ou caminho de arquivo (absoluto "/img.png" ou
+  // relativo "images/img.png") → trata como imagem. Só vira "texto/emoji"
+  // desenhado no ícone quando não parece um caminho (não tem "/" nem ".").
+  const pareceArquivo = /^(https?:\/\/|data:|\.?\.?\/)/.test(valor) || /\.[a-z0-9]{2,4}$/i.test(valor);
+  if (pareceArquivo) { link.href = valor; }
   else {
     const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${valor}</text></svg>`;
     link.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
