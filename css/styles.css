@@ -5,7 +5,7 @@
    (sobrescrevem --accent/--bg/--ink como custom properties).
    ========================================================================= */
 :root {
-  --accent: #6750A4;
+  --accent: #000000;
   --bg: #FFFBFE;
   --ink: #1C1B1F;
 
@@ -47,14 +47,18 @@ body {
 }
 
 /* ---------------------------------------------------------------- header */
+/* Mesma largura/alinhamento do conteúdo (main), não a página inteira. */
 header.app-header {
   background: var(--md-primary);
   color: var(--md-on-primary);
+  max-width: 960px;
+  margin: 0 auto;
   padding: var(--sp-2) var(--sp-3);
   display: flex;
   align-items: center;
   gap: var(--sp-2);
   box-shadow: var(--elev-1);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 header.app-header img {
   height: 32px; width: 32px;

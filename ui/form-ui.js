@@ -18,12 +18,12 @@ function campoGenerico(prefixo, tipo, dados, campoDef) {
 function campoSocioPJ(prefixo, dados) {
   const socioOptions = (dados.socios || []).map(s => `<option ${s === dados.socioSelecionado ? 'selected' : ''}>${s}</option>`).join('');
   return `<div class="field" style="margin-top:10px;max-width:320px;">
-      <label>Sócio que vai assinar</label>
+      <label>Sócio ou titular (MEI) que vai assinar</label>
       <select data-bind="${prefixo}.socioSelecionado" data-select-socio="${prefixo}">
         <option value="">Digitar manualmente...</option>
         ${socioOptions}
       </select>
-      <input type="text" style="margin-top:6px;display:${dados.socios && dados.socios.length ? 'none' : 'block'};" data-bind="${prefixo}.socioSelecionado" data-manual-socio="${prefixo}" placeholder="Nome do sócio" value="${(!dados.socios || !dados.socios.length) ? (dados.socioSelecionado || '') : ''}">
+      <input type="text" style="margin-top:6px;display:${dados.socios && dados.socios.length ? 'none' : 'block'};" data-bind="${prefixo}.socioSelecionado" data-manual-socio="${prefixo}" placeholder="Nome da pessoa física que vai assinar (sócio ou titular do MEI)" value="${(!dados.socios || !dados.socios.length) ? (dados.socioSelecionado || '') : ''}">
     </div>`;
 }
 

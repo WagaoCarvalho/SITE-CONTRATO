@@ -21,7 +21,7 @@ const LAYOUT_PDF = {
 
 const FONTE_PDF_PADRAO = { familia: 'helvetica', tamanho: 10.5 };
 
-const CORES_PADRAO = { destaque: '#6750A4', fundo: '#FFFBFE', texto: '#1C1B1F' };
+const CORES_PADRAO = { destaque: '#000000', fundo: '#FFFBFE', texto: '#1C1B1F' };
 
 const BRANDING_PADRAO = { nomeSistema: 'Gerador de Contrato', logoDataUrl: '', favicon: '📄' };
 
