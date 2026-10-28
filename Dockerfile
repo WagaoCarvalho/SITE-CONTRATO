@@ -13,7 +13,10 @@ COPY server/ ./
 RUN CGO_ENABLED=0 go build -o /server .
 
 FROM alpine:latest
-RUN apk add --no-cache wget
+# ca-certificates: necessário para o Go validar TLS ao chamar APIs externas
+# (BrasilAPI, ReceitaWS, etc.) de dentro do container — sem isso, toda
+# chamada HTTPS de saída falha e o proxy de busca sempre retorna 502.
+RUN apk add --no-cache wget ca-certificates
 
 WORKDIR /usr/share/app
 COPY index.html ./
