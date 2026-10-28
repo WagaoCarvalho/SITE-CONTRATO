@@ -115,6 +115,19 @@ document.addEventListener('click', e => {
   if (tipo) executarBusca(tipo, e.target.getAttribute('data-prefixo'));
 });
 
+/* Sincroniza o botão PF/PJ "ativo" com o STATE real — sem isso, ao
+   carregar um rascunho salvo com tipo diferente do marcado por padrão no
+   HTML, o botão ficava mostrando um tipo enquanto o formulário renderizava
+   outro, até o usuário clicar em algum dos dois (bug relatado: às vezes o
+   formulário aparecia como CPF com o botão CNPJ marcado). */
+function renderTogglesParte() {
+  ['arrendante', 'arrendatario'].forEach(prefixo => {
+    const tipo = prefixo === 'arrendante' ? STATE.tipoArrendante : STATE.tipoArrendatario;
+    const grupo = document.getElementById('toggle-' + prefixo);
+    [...grupo.children].forEach(b => b.classList.toggle('active', b.getAttribute('data-val') === tipo));
+  });
+}
+
 document.getElementById('toggle-arrendante').addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   STATE.tipoArrendante = e.target.getAttribute('data-val');

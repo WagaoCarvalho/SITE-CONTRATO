@@ -6,6 +6,7 @@
 function renderTudo() {
   garantirEstruturaClausulas(STATE, CONFIG);
   renderSeletorTipoContrato();
+  renderTogglesParte();
   renderParte('arrendante');
   renderParte('arrendatario');
   renderVeiculos();

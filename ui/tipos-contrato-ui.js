@@ -11,7 +11,7 @@ function renderTiposContrato() {
     const t = CONFIG.tiposContrato[chave];
     const idsOrdenados = Object.keys(t.clausulasPadrao).sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
     const clausulas = idsOrdenados.map((id, i) => `
-      <div class="row-inline" style="align-items:flex-start;">
+      <div class="row-inline" style="align-items:flex-start;margin-bottom:10px;">
         <textarea rows="2" style="flex:1;" data-tipo="${chave}" data-clausula-id="${id}">${t.clausulasPadrao[id]}</textarea>
         <button class="btn danger small" data-tipo="${chave}" data-remover-clausula="${id}">Remover</button>
       </div>`).join('');
