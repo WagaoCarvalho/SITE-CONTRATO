@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gerador de Contrato de Arrendamento</title>
+  <title>Gerador de Contrato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/png" href="images/favicon.png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -14,7 +16,7 @@
 
   <header class="app-header">
     <img id="app-logo" src="images/Icon.png" alt="logo">
-    <h1 id="app-name">Gerador de Contrato de Arrendamento</h1>
+    <h1 id="app-name">Gerador de Contrato</h1>
     <nav class="tabs">
       <button data-tab="formulario" class="active">Formulário</button>
       <button data-tab="clausulas">Cláusulas</button>
@@ -34,6 +36,13 @@
 
       <!-- STEP 1: FORM -->
       <div id="step-form">
+
+        <div class="card">
+          <div class="field" style="max-width:320px;">
+            <label>Tipo de contrato</label>
+            <select id="f-tipo-contrato"></select>
+          </div>
+        </div>
 
         <div class="card">
           <div class="row-inline" style="justify-content:space-between;">
@@ -92,7 +101,7 @@
                 maxlength="4"></div>
             <div class="field"><label>Chassis</label><input type="text" id="v-chassis"></div>
           </div>
-          <div style="margin-top:10px;"><button class="btn secondary" id="btn-add-veiculo">+ Adicionar veículo</button>
+          <div style="margin-top:10px;"><button class="btn secondary small" id="btn-add-veiculo">+ Adicionar veículo</button>
           </div>
           <table id="tabela-veiculos">
             <thead>
@@ -108,23 +117,11 @@
           </table>
         </div>
 
-        <div class="card">
-          <h2>Rascunho</h2>
-          <p class="muted">Salve o preenchimento atual em um arquivo para poder continuar depois, mesmo em outro momento
-            ou computador.</p>
-          <div class="row-inline">
-            <button class="btn secondary small" id="btn-export-rascunho">Exportar rascunho (.json)</button>
-            <span class="file-btn"><input type="file" id="input-import-rascunho" accept="application/json"
-                style="display:none;"><button class="btn secondary small"
-                onclick="document.getElementById('input-import-rascunho').click()">Importar rascunho
-                (.json)</button></span>
-            <button class="btn ghost small" id="btn-limpar-form">Limpar formulário</button>
-          </div>
-        </div>
+        <p class="muted">O preenchimento é salvo automaticamente neste navegador — pode sair da página e continuar depois.</p>
 
         <div id="msg-validacao"></div>
         <div class="actions-bar">
-          <span></span>
+          <button class="btn ghost small" id="btn-limpar-form">Limpar formulário</button>
           <button class="btn" id="btn-gerar-pdf">Gerar PDF →</button>
         </div>
       </div>
@@ -138,11 +135,18 @@
           <div class="row-inline" style="justify-content:space-between;margin-bottom:12px;">
             <div class="row-inline">
               <button class="btn" id="btn-baixar-pdf">Baixar PDF</button>
-              <button class="btn secondary" id="btn-copiar-texto">Copiar texto (Ctrl+C)</button>
+              <button class="btn secondary" id="btn-mostrar-texto">Ver/copiar texto</button>
             </div>
             <button class="btn ghost" id="btn-novo-contrato">Iniciar novo contrato</button>
           </div>
-          <pre class="contract-text" id="texto-final"></pre>
+          <iframe class="preview-pdf" id="preview-pdf" title="Pré-visualização do PDF"></iframe>
+          <div id="bloco-texto-copiavel" style="display:none;margin-top:14px;">
+            <div class="row-inline" style="justify-content:space-between;margin-bottom:8px;">
+              <label style="margin:0;">Texto completo (Ctrl+C)</label>
+              <button class="btn secondary small" id="btn-copiar-texto">Copiar texto</button>
+            </div>
+            <pre class="contract-text" id="texto-final"></pre>
+          </div>
         </div>
       </div>
 
@@ -207,6 +211,15 @@
       </div>
 
       <div class="card">
+        <h2>Tipos de contrato</h2>
+        <p class="muted">Arrendamento e Comodato já vêm cadastrados. Você pode editar os papéis/cláusulas de cada um
+          ou cadastrar um novo tipo de contrato com suas próprias cláusulas.</p>
+        <div id="tipos-contrato-lista"></div>
+        <button class="btn secondary small" id="btn-add-tipo-contrato" style="margin-top:10px;">+ Cadastrar tipo de
+          contrato</button>
+      </div>
+
+      <div class="card">
         <h2>APIs</h2>
         <p class="muted">Ordem = prioridade. Se a primeira falhar, o sistema tenta a próxima automaticamente. Chave é
           opcional (só necessária se a API exigir).</p>
@@ -225,32 +238,43 @@
       </div>
 
       <div class="card">
-        <h2>Salvar / restaurar configurações</h2>
+        <h2>Persistência das configurações</h2>
+        <p class="muted">As configurações (APIs, cores, tipos de contrato) são salvas automaticamente neste
+          navegador e, quando houver um servidor disponível, também nele — assim ficam disponíveis em qualquer
+          computador.</p>
+        <div id="status-servidor" class="msg"></div>
         <div class="row-inline">
-          <button class="btn secondary small" id="btn-export-config">Exportar config (.json)</button>
-          <span class="file-btn"><input type="file" id="input-import-config" accept="application/json"
-              style="display:none;"><button class="btn secondary small"
-              onclick="document.getElementById('input-import-config').click()">Importar config (.json)</button></span>
+          <button class="btn secondary small" id="btn-salvar-servidor">Salvar no servidor agora</button>
           <button class="btn ghost small" id="btn-reset-config">Restaurar padrões de fábrica</button>
         </div>
-        <div id="msg-config"></div>
       </div>
 
     </section>
 
   </main>
 
-  <!-- Módulos JS, nesta ordem (cada um depende dos anteriores) -->
-  <script src="js/config.js"></script>
-  <script src="js/state.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/form.js"></script>
-  <script src="js/clausulas.js"></script>
-  <script src="js/pdf.js"></script>
-  <script src="js/config-ui.js"></script>
-  <script src="js/navigation.js"></script>
-  <script src="js/main.js"></script>
+  <!-- Módulos JS — core (lógica pura) → infra (efeitos colaterais) → ui (DOM) -->
+  <script src="core/constantes.js"></script>
+  <script src="core/utils.js"></script>
+  <script src="core/tipos-parte.js"></script>
+  <script src="core/tipos-contrato.js"></script>
+  <script src="core/contrato.js"></script>
+  <script src="core/validacao.js"></script>
+  <script src="core/pdf-texto.js"></script>
+
+  <script src="infra/armazenamento.js"></script>
+  <script src="infra/armazenamento-servidor.js"></script>
+  <script src="infra/configuracao.js"></script>
+  <script src="infra/estado.js"></script>
+  <script src="infra/api-client.js"></script>
+  <script src="infra/pdf-contrato.js"></script>
+
+  <script src="ui/form-ui.js"></script>
+  <script src="ui/clausulas-ui.js"></script>
+  <script src="ui/tipos-contrato-ui.js"></script>
+  <script src="ui/config-ui.js"></script>
+  <script src="ui/navigation.js"></script>
+  <script src="ui/main.js"></script>
 </body>
 
 </html>

@@ -38,3 +38,11 @@ services:
     # Boas práticas leves (sem exagerar em hardening para não complicar)
     environment:
       - TZ=America/Sao_Paulo
+
+    # Persiste /data/config.json (chaves de API, tipos de contrato, etc.)
+    # fora do container, para não se perder em rebuilds/recriações.
+    volumes:
+      - contrato-dados:/data
+
+volumes:
+  contrato-dados:

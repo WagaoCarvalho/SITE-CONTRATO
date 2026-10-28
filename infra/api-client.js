@@ -1,5 +1,5 @@
 /* =========================================================================
-   MÓDULO: CLIENTES DE API (com fallback entre provedores)
+   MÓDULO: CLIENTES DE API (CEP, CNPJ, CPF) — com fallback entre provedores
    ========================================================================= */
 async function tentarProvedores(lista, montarUrl, montarHeaders, normalizar, categoria){
   for(const prov of lista.filter(p=>p.ativo!==false)){
