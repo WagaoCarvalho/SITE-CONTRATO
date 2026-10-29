@@ -15,11 +15,10 @@ services:
     image: gerador-contrato:latest
     container_name: gerador-contrato
 
-    # Publica a porta 80 do container na porta 80 do host.
-    # Se a 80 já estiver em uso (ex.: Apache/Nginx no host), troque a
-    # esquerda para "8080:80" e acesse via http://IP:8080
+    # Publica a porta 80 do container na porta 82 do host.
+    # Acesse via http://IP:82
     ports:
-      - "90:80"
+      - "82:80"
 
     # Auto-start + auto-recuperação.
     # - Sobe sozinho quando o Docker daemon inicia (após reboot)
