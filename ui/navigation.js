@@ -69,3 +69,8 @@ document.querySelectorAll('nav.tabs button').forEach(btn => {
     if (btn.getAttribute('data-tab') === 'clausulas') renderClausulas();
   });
 });
+
+/* Link do menu para o gateway (portal da intranet na porta 80 do mesmo
+   servidor). O endereço é montado a partir de onde a página foi aberta, então
+   funciona por nome (mandaquiserver), IP ou Tailscale sem configurar nada. */
+document.getElementById('link-gateway').href = `${location.protocol}//${location.hostname}/`;
