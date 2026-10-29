@@ -23,7 +23,7 @@ const FONTE_PDF_PADRAO = { familia: 'helvetica', tamanho: 10.5 };
 
 const CORES_PADRAO = { destaque: '#111111', fundo: '#F5F5F5', texto: '#111111' };
 
-const BRANDING_PADRAO = { nomeSistema: 'Gerador de Contrato', logoDataUrl: '', favicon: '📄' };
+const BRANDING_PADRAO = { nomeSistema: 'GERADOR DE CONTRATO', logoDataUrl: '', favicon: '📄' };
 
 /* Ordinais em português para rotular cláusulas dinamicamente, independente
    de quantas cláusulas cada tipo de contrato tenha (SRP/OCP: nenhum tipo
