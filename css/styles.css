@@ -71,25 +71,26 @@ body {
 header.app-header {
   --largura-conteudo: 960px;
   width: 100%;
-  padding: var(--sp-2) max(var(--sp-2), calc((100% - var(--largura-conteudo)) / 2 + var(--sp-2)));
+  min-height: 100px;
+  padding: var(--sp-3) max(var(--sp-2), calc((100% - var(--largura-conteudo)) / 2 + var(--sp-2)));
   display: flex;
   align-items: center;
   gap: var(--sp-2);
   background: var(--primary);
   color: var(--on-primary);
-  box-shadow: var(--elev-2);
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
 }
 header.app-header img {
-  height: 32px; width: 32px;
+  height: 48px; width: 52px;
   object-fit: contain;
-  border-radius: var(--radius-sm);
-  background: #fff;
+  flex-shrink: 0;
 }
 header.app-header h1 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 1px;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 2px;
   text-transform: uppercase; /* nome sempre em maiúsculas, mesmo se salvo em minúsculas */
 }
 
@@ -423,7 +424,9 @@ pre.contract-text {
 
 /* ============================================================ RESPONSIVO */
 @media (max-width: 720px) {
-  header.app-header { flex-wrap: wrap; }
+  header.app-header { flex-wrap: wrap; min-height: 0; padding-top: var(--sp-2); padding-bottom: var(--sp-2); }
+  header.app-header h1 { font-size: 20px; letter-spacing: 1.5px; }
+  header.app-header img { height: 36px; width: 40px; }
   nav.tabs { margin-left: 0; width: 100%; justify-content: space-between; }
   nav.tabs button, nav.tabs a.nav-link { flex: 1; padding: 8px; justify-content: center; }
   .card { padding: var(--sp-2); }
