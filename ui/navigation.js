@@ -27,16 +27,16 @@ document.getElementById('btn-baixar-pdf').addEventListener('click', () => {
   doc.save(nomeArquivoPdf());
 });
 
-// Regra de nome do arquivo:
-//  - 1 veículo  → "PLACA_CONTRATO.pdf"   (ex.: ABC1D23_CONTRATO.pdf)
-//  - 2+ veículos → "CONTRATO.pdf"
+// Regra de nome do arquivo: placa(s) separadas por "_" + "_CONTRATO.pdf"
+//  - 1 veículo  → ABC1D23_CONTRATO.pdf
+//  - 2+ veículos → ABC1D23_XYZ9K88_CONTRATO.pdf
+//  - sem placa válida → CONTRATO.pdf
 function nomeArquivoPdf() {
   const veiculos = (STATE && STATE.veiculos) || [];
-  if (veiculos.length === 1) {
-    const placa = (veiculos[0].placa || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-    if (placa) return `${placa}_CONTRATO.pdf`;
-  }
-  return 'CONTRATO.pdf';
+  const placas = veiculos
+    .map(v => (v.placa || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, ''))
+    .filter(Boolean);
+  return placas.length ? `${placas.join('_')}_CONTRATO.pdf` : 'CONTRATO.pdf';
 }
 
 document.getElementById('btn-mostrar-texto').addEventListener('click', () => {
