@@ -56,6 +56,13 @@ function migrarCoresAntigas(cfg) {
       if (cfg.cores[k] !== CORES_PADRAO[k]) { cfg.cores[k] = CORES_PADRAO[k]; mudou = true; }
     }
   });
+  // Nome do sistema: mesmo critério das cores — se ainda é um nome padrão
+  // antigo (nunca personalizado), troca pelo padrão atual.
+  const NOMES_PADRAO_ANTIGOS = ['gerador de contrato', 'gerador de contrato de arrendamento'];
+  if (cfg.branding && NOMES_PADRAO_ANTIGOS.includes(String(cfg.branding.nomeSistema || '').trim().toLowerCase())) {
+    cfg.branding.nomeSistema = BRANDING_PADRAO.nomeSistema;
+    mudou = true;
+  }
   return mudou;
 }
 
