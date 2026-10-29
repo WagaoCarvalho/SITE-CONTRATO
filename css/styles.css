@@ -65,16 +65,18 @@ body {
 }
 
 /* ================================================================ HEADER */
+/* Faixa ocupa 100% da largura; o conteúdo (logo, nome, abas) fica alinhado
+   às bordas dos cards: main tem max-width 960px e padding lateral de 16px,
+   então o recuo lateral do header é o mesmo que sobra até a borda do card. */
 header.app-header {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--sp-2) var(--sp-3);
+  --largura-conteudo: 960px;
+  width: 100%;
+  padding: var(--sp-2) max(var(--sp-2), calc((100% - var(--largura-conteudo)) / 2 + var(--sp-2)));
   display: flex;
   align-items: center;
   gap: var(--sp-2);
   background: var(--primary);
   color: var(--on-primary);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   box-shadow: var(--elev-2);
 }
 header.app-header img {
@@ -404,7 +406,7 @@ pre.contract-text {
 
 /* ============================================================ RESPONSIVO */
 @media (max-width: 720px) {
-  header.app-header { flex-wrap: wrap; border-radius: 0; padding: var(--sp-2); }
+  header.app-header { flex-wrap: wrap; }
   nav.tabs { margin-left: 0; width: 100%; justify-content: space-between; }
   nav.tabs button { flex: 1; padding: 8px; }
   .card { padding: var(--sp-2); }
