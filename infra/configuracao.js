@@ -38,10 +38,32 @@ function saveConfigLocal() {
 }
 
 // Mescla com os padrões para não quebrar se uma config antiga não tiver campos novos.
+/* Cores que já foram padrão em versões anteriores do tema. Se a config
+   salva ainda tiver uma delas, é porque o usuário nunca a personalizou —
+   então troca pela cor padrão atual. Cores escolhidas de propósito (qualquer
+   outro valor) são mantidas. */
+const CORES_PADRAO_ANTIGAS = {
+  destaque: ['#6750a4', '#000000', '#7a3b2e', '#333333'],
+  fundo: ['#fffbfe', '#f6f4ef'],
+  texto: ['#1c1b1f', '#20293a', '#000000']
+};
+function migrarCoresAntigas(cfg) {
+  if (!cfg.cores) { cfg.cores = Object.assign({}, CORES_PADRAO); return true; }
+  let mudou = false;
+  Object.keys(CORES_PADRAO_ANTIGAS).forEach(k => {
+    const atual = String(cfg.cores[k] || '').toLowerCase();
+    if (!atual || CORES_PADRAO_ANTIGAS[k].includes(atual)) {
+      if (cfg.cores[k] !== CORES_PADRAO[k]) { cfg.cores[k] = CORES_PADRAO[k]; mudou = true; }
+    }
+  });
+  return mudou;
+}
+
 let CONFIG = Object.assign(ConfigDefaults(), loadConfigLocal() || {});
 if (!CONFIG.tiposContrato || !Object.keys(CONFIG.tiposContrato).length) {
   CONFIG.tiposContrato = tiposContratoPadrao();
 }
+const _coresMigradasLocal = migrarCoresAntigas(CONFIG);
 
 let configServidorDisponivel = false;
 
@@ -58,8 +80,11 @@ async function inicializarConfiguracaoServidor(aposCarregar) {
     if (!CONFIG.tiposContrato || !Object.keys(CONFIG.tiposContrato).length) {
       CONFIG.tiposContrato = tiposContratoPadrao();
     }
-    saveConfigLocal();
+    migrarCoresAntigas(CONFIG);
+    saveConfigLocal(); // também regrava no servidor, já com as cores migradas
     if (typeof aposCarregar === 'function') aposCarregar();
+  } else if (_coresMigradasLocal) {
+    saveConfigLocal();
   }
   return configServidorDisponivel;
 }
